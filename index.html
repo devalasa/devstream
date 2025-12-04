@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevStream</title>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+  <header class="header">
+    <h1>DevStream</h1>
+
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Search developer topics...">
+      <button id="searchBtn">Search</button>
+    </div>
+  </header>
+
+  <section class="filters">
+    <button class="filter-btn" data-source="all">All</button>
+    <button class="filter-btn" data-source="reddit">Reddit</button>
+    <button class="filter-btn" data-source="x">X</button>
+  </section>
+
+  <section class="categories">
+    <button class="category">Web Development</button>
+    <button class="category">AI / ML</button>
+    <button class="category">Mobile Dev</button>
+    <button class="category">Cybersecurity</button>
+    <button class="category">Cloud / DevOps</button>
+    <button class="category">Languages</button>
+  </section>
+
+  <main id="results" class="results"></main>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
