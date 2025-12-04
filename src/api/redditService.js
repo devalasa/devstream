@@ -1,10 +1,10 @@
 const redditService = {
   async searchReddit(query) {
-    const url = `https://www.reddit.com/search.json?q=${query}&limit=20`;
-
-    const res = await fetch(url);
+    // 1. CORRECT: Single fetch call to your backend proxy
+    const res = await fetch(`http://localhost:3000/api/reddit?q=${query}`);
     const data = await res.json();
 
+    // The rest of the mapping logic is correct for Reddit data structure
     return data.data.children.map(post => ({
       platform: "reddit",
       title: post.data.title,

@@ -1,22 +1,39 @@
 const xService = {
   async searchX(query) {
-    const url = `https://api.x.com/2/tweets/search/recent?query=${query}&max_results=20`;
-
-    const res = await fetch(url, {
-      headers: {
-        "Authorization": `Bearer YOUR_X_API_KEY`
-      }
-    });
-
+    // 1. CORRECT: Single fetch call to your backend proxy
+    const res = await fetch(`http://localhost:3000/api/x?q=${query}`);
     const data = await res.json();
 
-    return data.data.map(tweet => ({
-      platform: "x",
-      text: tweet.text,
-      user: tweet.author_id,
-      id: tweet.id,
-      url: `https://x.com/i/status/${tweet.id}`
-    }));
+    if (data.error || !data.data) {
+        console.error("X Service Error:", data.error);
+        return []; 
+    }
+
+    // 2. Data Normalization: Map users from the 'includes' array
+    const usersMap = new Map();
+    if (data.includes && data.includes.users) {
+        data.includes.users.forEach(user => {
+            usersMap.set(user.id, user);
+        });
+    }
+
+    // 3. Data Mapping: Return the unified object structure
+    return data.data.map(tweet => {
+      const user = usersMap.get(tweet.author_id);
+      
+      return {
+        platform: "x",
+        text: tweet.text,
+        // Using user data from the map
+        user: user ? user.username : 'Unknown User',
+        profile_image_url: user ? user.profile_image_url : null,
+        // Using public metrics
+        likes: tweet.public_metrics ? tweet.public_metrics.like_count : 0,
+        retweets: tweet.public_metrics ? tweet.public_metrics.retweet_count : 0,
+        timestamp: tweet.created_at,
+        url: `https://x.com/i/status/${tweet.id}`
+      };
+    });
   }
 };
 
