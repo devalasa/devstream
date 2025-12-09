@@ -1,55 +1,39 @@
-/* ---------- Global Variables (New Color Palette) ---------- */
+/* ---------- 🎨 Global Variables: DARK THEME (Default) ---------- */
 :root {
-  /* User-Defined Colors */
-  --carbon-black: #1F2428;
-  --steel-azure: #004E9F;
-  --platinum: #F1F3F2;
-  --amber-flame: #FFB317;
-  --pale-slate: #C0C7CF;
-
-  /* Semantic Mappings */
-  --primary-bg: var(--carbon-black);
-  --card-bg: #2C3136;    /* Slightly lighter than primary-bg for visual lift */
-  --text-light: var(--platinum);
-  --text-muted: var(--pale-slate);
-  --accent: var(--steel-azure);
-  --highlight: var(--amber-flame);
+  /* Dark Theme Colors (Current Scheme) */
+  --primary-bg: #1F2428;    /* Carbon Black */
+  --card-bg: #2C3136;
+  --text-light: #F1F3F2;    /* Platinum */
+  --text-muted: #C0C7CF;    /* Pale Slate */
+  --accent: #004E9F;        /* Steel Azure */
+  --highlight: #FFB317;     /* Amber Flame */
+  --button-default-bg: #3A4047; /* For filter buttons */
   
   --border-radius-sm: 6px;
   --border-radius-lg: 10px;
   --shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
 
-.header {
-  padding: 20px;
-  /* Removed: text-align: center; */
-  display: flex; /* Makes children (logo, h1, search-container) line up horizontally */
-  align-items: center; /* Vertically centers all items */
-  justify-content: space-between; /* Spreads out the items evenly */
-  max-width: 1200px; /* Gives the header a max width */
-  margin: 0 auto; /* Centers the header container on the page */
+/* ---------- ☀️ Light Theme Overrides ---------- */
+body.light-theme {
+  --primary-bg: #F1F3F2;    /* Platinum (Light Background) */
+  --card-bg: #FFFFFF;       /* White Card */
+  --text-light: #1F2428;    /* Carbon Black (Dark Text) */
+  --text-muted: #555555;    /* Dark Gray Muted Text */
+  --accent: #004E9F;        /* Keep Accent Blue */
+  --highlight: #FFB317;     /* Keep Highlight Yellow */
+  --button-default-bg: #E0E0E0; /* Light button background */
+  --shadow: 0 2px 8px rgba(0,0,0,0.1); /* Lighter shadow */
 }
 
-/* Style for the logo image */
-.header a img {
-  height: 40px; /* Adjust height as needed */
-  width: auto;
-}
-
-.header a {
-  display: flex;
-  align-items: center;
-  text-decoration: none; /* Removes underline from link */
-  color: inherit; /* Inherits text color */
-  gap: 10px; /* Space between logo and title */
-} 
-
+/* ---------- Base Styles ---------- */
 body {
   background: var(--primary-bg);
   color: var(--text-light);
   font-family: Inter, sans-serif;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
 }
 
 /* Base style for clickable elements with transition for smooth hovers */
@@ -60,13 +44,38 @@ button, .card {
 /* ---------- Header ---------- */
 .header {
   padding: 20px;
-  text-align: center;
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  max-width: 1200px; 
+  margin: 0 auto; 
 }
 
+.header h1 {
+    margin: 0; 
+}
+
+/* New Theme Toggle Button Style */
+.theme-toggle-btn {
+    padding: 8px 12px;
+    background: var(--button-default-bg);
+    color: var(--text-light);
+    border: 1px solid var(--text-muted);
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Style for the logo image */
+.header a img {
+  height: 40px; 
+  width: auto;
+}
+
+/* ---------- Search ---------- */
 .search-container {
-  margin-top: 15px;
   display: flex;
-  justify-content: center;
   gap: 10px;
 }
 
@@ -74,8 +83,8 @@ button, .card {
   padding: 10px;
   width: 250px;
   border-radius: var(--border-radius-sm);
-  border: 1px solid #444; 
-  background: var(--card-bg);
+  border: 1px solid var(--text-muted); 
+  background: var(--card-bg); /* Use card-bg */
   color: var(--text-light);
   outline: none;
 }
@@ -105,7 +114,7 @@ button, .card {
 }
 
 .filter-btn, .category {
-  background: var(--card-bg);
+  background: var(--button-default-bg);
   color: var(--text-light);
   border: none;
   padding: 8px 12px;
@@ -114,7 +123,10 @@ button, .card {
 }
 
 .filter-btn:hover, .category:hover {
-    background: #3A4047; /* Darken slightly on hover */
+    background: #5A6067; 
+}
+body.light-theme .filter-btn:hover, body.light-theme .category:hover {
+    background: #CCCCCC; /* Light theme hover */
 }
 
 /* Style for an active filter/category */
@@ -146,43 +158,54 @@ button, .card {
 }
 
 .card:hover {
-    background-color: #384047; /* Slight lift/color change on hover */
+    background-color: #384047; 
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(0,0,0,0.5);
 }
-
-.card img.thumbnail {
-  width: 80px;
-  height: 80px;
-  border-radius: var(--border-radius-sm);
-  object-fit: cover;
+body.light-theme .card:hover {
+    background-color: #F8F8F8;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
-.card-content {
-  flex: 1;
-}
 
 .card-title {
-  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: 6px;
   color: var(--text-light);
 }
 
 .card-meta {
-  font-size: 0.8rem;
-  color: var(--text-muted); /* Using the pale-slate color for metadata */
-  margin-bottom: 8px;
+  color: var(--text-muted); 
 }
 
-.card p {
-  font-size: 0.9rem;
-  line-height: 1.4;
-  color: var(--text-light);
+.bookmark-btn {
+    background: var(--button-default-bg);
+    color: var(--text-light);
+    border: none;
+    padding: 6px 10px;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: auto; 
+    white-space: nowrap;
+}
+
+.bookmark-btn.saved {
+    background: var(--highlight); 
+    color: var(--primary-bg);
 }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 600px) {
+  .header {
+    flex-direction: column; 
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .search-container {
+    justify-content: center;
+  }
+
   .card {
     flex-direction: column;
     align-items: center;
