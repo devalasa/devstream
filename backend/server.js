@@ -3,14 +3,15 @@ import axios from "axios";
 import cors from "cors";
 import dotenv from "dotenv";
 
-// FIX/DEBUG: Set the path to look for the .env file one level up 
-// or wherever your .env file is located. If it's in the 'backend' folder,
-// this works. If it's in the root, you might need to adjust the path.
-// For now, assume it is in the same directory as server.js.
 dotenv.config(); 
 
 const app = express();
 app.use(cors());
+
+app.get("/", (req, res) => {
+    // Respond to GET requests at the root URL with a status message.
+    res.status(200).json({ status: "ok", message: "DevStream API Proxy is running." });
+});
 
 
 // X API PROXY
