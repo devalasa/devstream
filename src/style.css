@@ -12,6 +12,9 @@
   --border-radius-sm: 6px;
   --border-radius-lg: 10px;
   --shadow: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow: 0 4px 12px rgba(0,0,0,0.4);
+  /* NEW: Default to Dark Glow */
+  --background-glow-animation: gentleGlow-dark 15s ease-in-out infinite alternate;
 }
 
 /* ---------- ☀️ Light Theme Overrides ---------- */
@@ -24,10 +27,14 @@ body.light-theme {
   --highlight: #FFB317;     /* Keep Highlight Yellow */
   --button-default-bg: #E0E0E0; /* Light button background */
   --shadow: 0 2px 8px rgba(0,0,0,0.1); /* Lighter shadow */
+  --shadow: 0 2px 8px rgba(0,0,0,0.1); /* Lighter shadow */
+  /* NEW: Use Light Glow in light theme */
+  --background-glow-animation: gentleGlow-light 15s ease-in-out infinite alternate;
 }
 
 /* ---------- Base Styles ---------- */
 body {
+  animation: var(--background-glow-animation); 
   background: var(--primary-bg);
   color: var(--text-light);
   font-family: Inter, sans-serif;
@@ -41,6 +48,48 @@ button, .card {
     transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
 }
 
+/* ========================================================== */
+/* ---------- 🌟 ANIMATIONS KEYFRAMES (NEW BLOCK) ---------- */
+/* ========================================================== */
+
+/* Keyframes for smooth entrance: slides up and fades in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px); 
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keyframes for the gentle background pulse (Dark Theme) */
+@keyframes gentleGlow-dark {
+  0% {
+    background-color: #1F2428; 
+  }
+  50% {
+    background-color: #24292e; /* Slightly different dark shade */
+  }
+  100% {
+    background-color: #1F2428;
+  }
+}
+
+/* Keyframes for the gentle background pulse (Light Theme) */
+@keyframes gentleGlow-light {
+  0% {
+    background-color: #F1F3F2; 
+  }
+  50% {
+    background-color: #E8ECEB; /* Slightly darker light shade */
+  }
+  100% {
+    background-color: #F1F3F2;
+  }
+}
+
 /* ---------- Header ---------- */
 .header {
   padding: 20px;
@@ -50,6 +99,65 @@ button, .card {
   max-width: 1200px; 
   margin: 0 auto; 
 }
+header a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ========================================================== */
+/* ---------- 🚀 ENTRANCE EFFECTS (NEW) ---------- */
+/* ========================================================== */
+
+/* The base class for the fade-in animation (for single elements or data) */
+.fade-in {
+  opacity: 0; /* Ensures the element starts invisible */
+  animation: fadeIn 0.8s ease-out forwards; 
+}
+
+/* Staggered entrance for Header elements */
+.header > a, 
+.header > .search-container,
+.header > .theme-toggle-btn {
+  /* This prevents a flicker before the animation starts */
+  opacity: 0; 
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Stagger the appearance of header elements */
+.header > a {
+  animation-delay: 0.1s;
+}
+.header > .search-container {
+  animation-delay: 0.3s;
+}
+.header > .theme-toggle-btn {
+  animation-delay: 0.5s;
+}
+
+/* NEW: Fade-in for the filter sections */
+.filters, .categories {
+  /* ... existing styles ... */
+  
+  /* ADDED: Fade-in for the whole filter section */
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: 0.7s; 
+}
+
+/* NEW: Fade-in for the main results area */
+.results {
+  /* ... existing styles ... */
+  
+  /* ADDED: Fade-in for the results area, starts slightly later */
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+  animation-delay: 0.9s; 
+}
+
+
 
 .header h1 {
     margin: 0; 
@@ -89,6 +197,7 @@ button, .card {
   outline: none;
 }
 
+/* REPLACE/ADD these search button rules */
 .search-container button {
   padding: 10px 16px;
   background: var(--accent);
@@ -97,6 +206,19 @@ button, .card {
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-weight: 600;
+  /* Ensure this transition property is set for smooth active state */
+  transition: all 0.2s ease;
+}
+
+/* NEW: Search Button Hover/Active Effects */
+.search-container button:hover {
+  background: #0060C0; /* Slightly lighter accent blue on hover */
+  transform: translateY(-2px); /* Lifts a bit more on hover */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Add shadow for lift effect */
+}
+.search-container button:active {
+  transform: scale(0.98); /* Simulate a press */
+  box-shadow: none;
 }
 
 .search-container button:hover {
@@ -145,6 +267,7 @@ body.light-theme .filter-btn:hover, body.light-theme .category:hover {
   gap: 20px;
 }
 
+/* REPLACE the .card rule */
 .card {
   background: var(--card-bg);
   padding: 15px;
@@ -155,16 +278,23 @@ body.light-theme .filter-btn:hover, body.light-theme .category:hover {
   box-shadow: var(--shadow); 
   text-decoration: none; 
   color: inherit;
+  
+  /* NEW: Ensure individual card items transition smoothly for the hover lift */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* REPLACE the .card:hover rule with the new, more pronounced lift */
 .card:hover {
-    background-color: #384047; 
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+  /* Use a slightly darker background color based on the current theme */
+  background-color: color-mix(in srgb, var(--card-bg), black 5%); 
+  transform: translateY(-4px) scale(1.005); /* Lifts and slightly grows */
+  /* Stronger shadow on hover to match the lift */
+  box-shadow: 0 12px 25px rgba(0,0,0,0.4); 
 }
+
 body.light-theme .card:hover {
-    background-color: #F8F8F8;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  background-color: #F8F8F8;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
 
@@ -201,6 +331,7 @@ body.light-theme .card:hover {
     text-align: center;
     gap: 15px;
   }
+  
   
   .search-container {
     justify-content: center;
